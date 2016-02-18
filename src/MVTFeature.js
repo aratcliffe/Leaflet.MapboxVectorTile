@@ -294,6 +294,8 @@ MVTFeature.prototype._drawLineString = function(ctx, coordsArray, style) {
   var ctx2d = ctx.canvas.getContext('2d');
   ctx2d.strokeStyle = style.color;
   ctx2d.lineWidth = style.size;
+  ctx2d.lineCap = style.lineCap || 'butt';
+  ctx2d.lineJoin = style.lineJoin || 'miter';    
   ctx2d.beginPath();
 
   var projCoords = [];
