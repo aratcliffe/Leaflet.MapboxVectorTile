@@ -122,7 +122,8 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     map.on("layerremove", function(e) {
       // check to see if the layer removed is this one
       // call a method to remove the child layers (the ones that actually have something drawn on them).
-      if (e.layer._leaflet_id === self._leaflet_id && e.layer.removeChildLayers) {
+        if (e.layer._leaflet_id === self._leaflet_id && e.layer.removeChildLayers) {
+        self.xhr && self.xhr.abort();
         e.layer.removeChildLayers(map);
         map.off('click', mapOnClickCallback);
       }
@@ -192,20 +193,19 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     var self = this;
 
 //    //This works to skip fetching and processing tiles if they've already been processed.
-//    var vectorTile = this.processedTiles[ctx.zoom][ctx.id];
+    var vectorTile = this.processedTiles[ctx.zoom][ctx.id];
 //    //if we've already parsed it, don't get it again.
-//    if(vectorTile){
-//      console.log("Skipping fetching " + ctx.id);
-//      self.checkVectorTileLayers(parseVT(vectorTile), ctx, true);
-//      self.reduceTilesToProcessCount();
-//      return;
-//    }
+    if(vectorTile){
+      self.checkVectorTileLayers(parseVT(vectorTile), ctx, true);
+      self.reduceTilesToProcessCount();
+      return;
+    }
 
     if (!this._url) return;
     var src = this.getTileUrl({ x: ctx.tile.x, y: ctx.tile.y, z: ctx.zoom });
 
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
+    var xhr = self.xhr = new XMLHttpRequest();
+      xhr.onload = function() {
       if (xhr.status == "200") {
 
         if(!xhr.response) return;
@@ -215,7 +215,6 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
         var vt = new VectorTile(buf);
         //Check the current map layer zoom.  If fast zooming is occurring, then short circuit tiles that are for a different zoom level than we're currently on.
         if(self.map && self.map.getZoom() != ctx.zoom) {
-          console.log("Fetched tile for zoom level " + ctx.zoom + ". Map is at zoom level " + self._map.getZoom());
           return;
         }
         self.checkVectorTileLayers(parseVT(vt), ctx);

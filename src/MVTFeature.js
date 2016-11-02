@@ -91,7 +91,7 @@ function ajaxCallback(self, response) {
 }
 
 MVTFeature.prototype._setStyle = function(styleFn) {
-  this.style = styleFn(this, this.ajaxData);
+  this.style = styleFn(this, this.ajaxData, this.map);
 
   // The label gets removed, and the (re)draw,
   // that is initiated by the MVTLayer creates a new label.
@@ -100,7 +100,7 @@ MVTFeature.prototype._setStyle = function(styleFn) {
 
 MVTFeature.prototype.setStyle = function(styleFn) {
   this.ajaxData = null;
-  this.style = styleFn(this, null);
+  this.style = styleFn(this, null, this.map);
   var hasAjaxSource = ajax(this);
   if (!hasAjaxSource) {
     // The label gets removed, and the (re)draw,
@@ -300,20 +300,23 @@ MVTFeature.prototype._drawLineString = function(ctx, coordsArray, style) {
 
   var projCoords = [];
   var tile = this.tiles[ctx.id];
+  var offset = style.offset || [0, 0];
 
   for (var gidx in coordsArray) {
     var coords = coordsArray[gidx];
 
     for (i = 0; i < coords.length; i++) {
       var method = (i === 0 ? 'move' : 'line') + 'To';
-      var proj = this._tilePoint(coords[i]);
-      projCoords.push(proj);
-      ctx2d[method](proj.x, proj.y);
+        var proj = this._tilePoint(coords[i]);
+        proj.x += offset[0];
+        proj.y += offset[1];
+        projCoords.push(proj);
+        ctx2d[method](proj.x, proj.y);
     }
   }
 
   ctx2d.stroke();
-  ctx2d.restore();
+  //ctx2d.restore();
 
   tile.paths.push(projCoords);
 };

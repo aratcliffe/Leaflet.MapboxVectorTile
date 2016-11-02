@@ -27,7 +27,7 @@ module.exports = L.TileLayer.Canvas.extend({
     }
   },
 
-  _getDistanceFromLine: function(pt, pts) {
+    _getDistanceFromLine: function(pt, pts) {
     var min = Number.POSITIVE_INFINITY;
     if (pts && pts.length > 1) {
       pt = L.point(pt.x, pt.y);
@@ -199,7 +199,7 @@ module.exports = L.TileLayer.Canvas.extend({
       //Create a new MVTFeature if one doesn't already exist for this feature.
       if (!mvtFeature) {
         //Get a style for the feature - set it just once for each new MVTFeature
-        var style = self.style(vtf);
+        var style = self.style(vtf, null, self.map);
 
         //create a new feature
         self.features[uniqueID] = mvtFeature = new MVTFeature(self, vtf, layerCtx, uniqueID, style);
