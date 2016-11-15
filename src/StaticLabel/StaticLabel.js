@@ -20,7 +20,7 @@ function StaticLabel(mvtFeature, ctx, latLng, style) {
     }
   }
 
-  init(self, mvtFeature, ctx, latLng, style)
+  init(self, mvtFeature, ctx, latLng, style);
 }
 
 function init(self, mvtFeature, ctx, latLng, style) {

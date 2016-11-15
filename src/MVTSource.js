@@ -226,13 +226,13 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     };
 
     xhr.onerror = function() {
-      console.log("xhr error: " + xhr.status)
+      console.log("xhr error: " + xhr.status);
     };
 
     xhr.open('GET', src, true); //async is true
     var headers = self.options.xhrHeaders;
     for (var header in headers) {
-      xhr.setRequestHeader(header, headers[header])
+      xhr.setRequestHeader(header, headers[header]);
     }
     xhr.responseType = 'arraybuffer';
     xhr.send();
@@ -497,7 +497,7 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
 if (typeof(Number.prototype.toRad) === "undefined") {
   Number.prototype.toRad = function() {
     return this * Math.PI / 180;
-  }
+  };
 }
 
 function getTileURL(lat, lon, zoom) {

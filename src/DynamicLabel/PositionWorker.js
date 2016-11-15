@@ -40,7 +40,7 @@ calcPos = {
         center = {
           status: 'ERR',
           description: 'No centroid calculated.'
-        }
+        };
       } else {
         center.status = 'OK';
         center.z = parseInt(largestPoly.tid.split(':')[0]);

@@ -224,7 +224,7 @@ module.exports = L.TileLayer.Canvas.extend({
     if (layerOrdering) {
       //We've assigned the custom zIndex property when iterating above.  Now just sort.
       self._canvasIDToFeatures[layerCtx.id].features = self._canvasIDToFeatures[layerCtx.id].features.sort(function(a, b) {
-        return -(b.properties.zIndex - a.properties.zIndex)
+        return -(b.properties.zIndex - a.properties.zIndex);
       });
     }
 
